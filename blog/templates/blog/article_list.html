@@ -1,0 +1,29 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Все статьи — Мой блог{% endblock %}
+
+{% block content %}
+    <div class="article-list">
+        {% for article in articles %}
+            <article class="article-card">
+                {% if article.image %}
+                    <a href="{% url 'article_detail' article.pk %}">
+                        <img src="{{ article.image.url }}" alt="{{ article.title }}" class="article-card-image">
+                    </a>
+                {% endif %}
+                <div class="article-card-body">
+                    <h2>
+                        <a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a>
+                    </h2>
+                    <p class="article-meta">🕒 {{ article.created_at|date:"d.m.Y в H:i" }}</p>
+                    <p class="article-excerpt">{{ article.content|truncatewords:25 }}</p>
+                </div>
+            </article>
+        {% empty %}
+            <div class="empty-state">
+                <p>📭 Пока нет ни одной статьи.</p>
+                <p>Загляните в <a href="/admin/">админку</a>, чтобы добавить первую.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
